@@ -4,6 +4,7 @@ import { useState } from "react";
 import { updateProduct } from "@/app/actions";
 import SubmitButton from "@/app/components/submit-button";
 import { Product } from "@/app/lib/types/product.interfase";
+import Image from "next/image";
 
 type Props = {
   id: string;
@@ -53,6 +54,28 @@ export default function EditForm({ id, product }: Props) {
         className="w-full max-w-lg border px-2 py-1.5"
         placeholder="Image path"
       />
+
+      {product.image ? (
+        <Image
+          src={product.image}
+          alt={product.title}
+          width={100}
+          height={100}
+          className="w-full max-w-xs object-contain bg-gray-200 rounded"
+          priority
+          quality={100}
+        />
+      ) : (
+        <Image
+          src={"/prod.svg"}
+          alt={product.title}
+          width={200}
+          height={200}
+          className="w-full max-w-xs object-contain bg-gray-200 rounded"
+          priority
+          quality={100}
+        />
+      )}
 
       <SubmitButton label="Save" />
     </form>
