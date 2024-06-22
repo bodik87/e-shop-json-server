@@ -5,15 +5,17 @@ import { revalidatePath } from "next/cache";
 import { Product } from "./lib/types/product.interfase";
 import { redirect } from "next/navigation";
 
+const API_URL = "https://json-server-vercel-shop.vercel.app/";
+
 export async function getAllProducts() {
-  const response = await fetch("http://localhost:4002/products");
+  const response = await fetch(`${API_URL}products`);
   const products = await response.json();
   revalidatePath("/");
   return products;
 }
 
 export async function getProduct(id: string) {
-  const response = await fetch(`http://localhost:4002/products/${id}`);
+  const response = await fetch(`${API_URL}products/${id}`);
   const product = await response.json();
   revalidatePath("/admin/edit");
   return product;
@@ -24,7 +26,7 @@ export async function createProduct(formData: FormData) {
   const price = formData.get("price") as string;
 
   if (title && price) {
-    await fetch("http://localhost:4002/products", {
+    await fetch(`${API_URL}products`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: randomUUID(), title, price }),
@@ -35,7 +37,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(product: Product) {
-  await fetch(`http://localhost:4002/products/${product.id}`, {
+  await fetch(`${API_URL}products/${product.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(product),
@@ -45,7 +47,7 @@ export async function updateProduct(product: Product) {
 }
 
 export async function deleteProduct(id: string) {
-  await fetch(`http://localhost:4002/products/${id}`, {
+  await fetch(`${API_URL}products/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
