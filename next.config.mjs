@@ -7,6 +7,12 @@ const nextConfig = {
         hostname: "json-server-vercel-shop.vercel.app",
       },
     ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+    ],
   },
 };
 

@@ -13,13 +13,15 @@ type Props = {
 export default function EditForm({ id, product }: Props) {
   const [title, setTitle] = useState(product.title);
   const [price, setPrice] = useState(product.price);
+  const [image, setImage] = useState(product?.image);
 
   const actionUpdate = async () => {
-    if (title && price) {
-      await updateProduct({ id, title, price });
+    if (title && price && image) {
+      await updateProduct({ id, title, price, image });
     }
     setTitle("");
     setPrice(0);
+    setImage("");
   };
   return (
     <form className="mt-4 flex flex-col gap-2" action={actionUpdate}>
@@ -28,7 +30,7 @@ export default function EditForm({ id, product }: Props) {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="w-fit border px-2 py-1.5"
+        className="w-full max-w-lg border px-2 py-1.5"
         placeholder="Title"
       />
 
@@ -38,8 +40,18 @@ export default function EditForm({ id, product }: Props) {
         type="number"
         value={price}
         onChange={(e) => setPrice(Number(e.target.value))}
-        className="w-fit border px-2 py-1.5"
+        className="w-full max-w-lg border px-2 py-1.5"
         placeholder="Price"
+      />
+
+      <label>Image path</label>
+      <input
+        name="image"
+        type="text"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+        className="w-full max-w-lg border px-2 py-1.5"
+        placeholder="Image path"
       />
 
       <SubmitButton label="Save" />

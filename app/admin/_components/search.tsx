@@ -5,6 +5,7 @@ import Link from "next/link";
 import { deleteProduct } from "@/app/actions";
 import SubmitButton from "@/app/components/submit-button";
 import { Product } from "@/app/lib/types/product.interfase";
+import Image from "next/image";
 
 type Props = { products: Product[] };
 
@@ -46,6 +47,28 @@ export default function Search({ products }: Props) {
           >
             <strong>{product.title}</strong>
             <p>Price: {product.price}</p>
+
+            {product.image ? (
+              <Image
+                src={product.image}
+                alt={product.title}
+                width={100}
+                height={100}
+                className="w-full object-contain bg-gray-200 rounded"
+                priority
+                quality={100}
+              />
+            ) : (
+              <Image
+                src={"/prod.svg"}
+                alt={product.title}
+                width={200}
+                height={200}
+                className="w-full object-contain bg-gray-200 rounded"
+                priority
+                quality={100}
+              />
+            )}
 
             <div className="flex gap-2">
               <Link

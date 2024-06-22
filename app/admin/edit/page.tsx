@@ -1,7 +1,5 @@
-import { getProduct, updateProduct } from "@/app/actions";
-import SubmitButton from "@/app/components/submit-button";
+import { getProduct } from "@/app/actions";
 import { Product } from "@/app/lib/types/product.interfase";
-import { useState } from "react";
 import EditForm from "./_components/edit-form";
 
 type Props = { searchParams: { id: string } };
