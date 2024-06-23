@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { Product } from "./lib/types/product.interfase";
 import { redirect } from "next/navigation";
 
-const API_URL = "https://json-server-vercel-shop.vercel.app/";
+const API_URL = "https://json-server-vercel-shop.vercel.app/api";
 
 export async function getAll(page: string | undefined) {
   const response = await fetch(`${API_URL}products?_page=${page}&_limit=2`);
