@@ -7,6 +7,13 @@ import { redirect } from "next/navigation";
 
 const API_URL = "https://json-server-vercel-shop.vercel.app/";
 
+export async function getAll(page: string | undefined) {
+  const response = await fetch(`${API_URL}products?_page=${page}&_limit=2`);
+  const products = await response.json();
+  revalidatePath("/");
+  return products;
+}
+
 export async function getAllProducts() {
   const response = await fetch(`${API_URL}products`);
   const products = await response.json();
@@ -24,12 +31,13 @@ export async function getProduct(id: string) {
 export async function createProduct(formData: FormData) {
   const title = formData.get("title") as string;
   const price = formData.get("price") as string;
+  const image = formData.get("image") as string;
 
   if (title && price) {
     await fetch(`${API_URL}products`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: randomUUID(), title, price }),
+      body: JSON.stringify({ id: randomUUID(), title, price, image }),
     });
     revalidatePath("/admin");
     redirect("/admin");
@@ -37,6 +45,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(product: Product) {
+  console.log(product);
   await fetch(`${API_URL}products/${product.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

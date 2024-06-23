@@ -17,13 +17,14 @@ export default function EditForm({ id, product }: Props) {
   const [image, setImage] = useState(product?.image);
 
   const actionUpdate = async () => {
-    if (title && price && image) {
+    if (title && price) {
       await updateProduct({ id, title, price, image });
     }
     setTitle("");
     setPrice(0);
-    setImage("");
+    setImage(undefined);
   };
+
   return (
     <form className="mt-4 flex flex-col gap-2" action={actionUpdate}>
       <label>Title</label>
@@ -55,29 +56,7 @@ export default function EditForm({ id, product }: Props) {
         placeholder="Image path"
       />
 
-      {product.image ? (
-        <Image
-          src={product.image}
-          alt={product.title}
-          width={100}
-          height={100}
-          className="w-full max-w-xs object-contain bg-gray-200 rounded"
-          priority
-          quality={100}
-        />
-      ) : (
-        <Image
-          src={"/prod.svg"}
-          alt={product.title}
-          width={200}
-          height={200}
-          className="w-full max-w-xs object-contain bg-gray-200 rounded"
-          priority
-          quality={100}
-        />
-      )}
-
-      <SubmitButton label="Save" />
+      <SubmitButton label="Save changes" />
     </form>
   );
 }

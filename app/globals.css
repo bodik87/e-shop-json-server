@@ -29,3 +29,7 @@ h1 {
 .button {
   @apply mt-3 w-fit bg-black disabled:bg-gray-400 text-white flex items-center justify-center px-3.5 py-1 rounded-full;
 }
+
+input {
+  @apply outline-none;
+}

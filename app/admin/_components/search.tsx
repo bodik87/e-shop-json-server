@@ -30,16 +30,18 @@ export default function Search({ products }: Props) {
 
   return (
     <section className="mt-2">
-      <strong>Products</strong>
-      <input
-        type="search"
-        className="max-w-md w-full ml-4 border px-3 py-2 rounded-full my-4"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Search"
-      />
+      <div className="flex flex-col md:flex-row items-center gap-4 my-4">
+        <strong>Products</strong>
+        <input
+          type="search"
+          className="max-w-md w-full border border-black px-3 py-2 rounded-full"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Search"
+        />
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {filteredProducts.map((product) => (
           <div
             key={product.id}

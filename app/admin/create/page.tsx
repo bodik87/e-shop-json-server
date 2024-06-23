@@ -12,7 +12,7 @@ export default function Create({}: Props) {
         <input
           name="title"
           type="text"
-          className="w-fit border px-2 py-1.5"
+          className="w-full max-w-lg border px-2 py-1.5"
           placeholder="Title"
         />
 
@@ -20,8 +20,16 @@ export default function Create({}: Props) {
         <input
           name="price"
           type="number"
-          className="w-fit border px-2 py-1.5"
+          className="w-full max-w-lg border px-2 py-1.5"
           placeholder="Price"
+        />
+
+        <label>Image path</label>
+        <input
+          name="image"
+          type="text"
+          className="w-full max-w-lg border px-2 py-1.5"
+          placeholder="Image path"
         />
 
         <SubmitButton label="Save" />
