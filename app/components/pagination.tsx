@@ -1,38 +1,59 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { PER_PAGE } from "../lib/types/constatns";
 
 type Props = {
-  totalPages: number;
+  path: string;
+  length: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
 };
 
-export default function Pagination({ totalPages }: Props) {
+export default function Pagination({
+  path,
+  length,
+  hasNextPage,
+  hasPrevPage,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentPage = Number(searchParams.get("page")) || 1;
-
-  const createPageURL = (pageNumber: number | string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", pageNumber.toString());
-    router.push(`?page=${pageNumber}`);
-  };
-
-  const pages = Array.from(Array((totalPages % 2) + 1).keys());
+  const page = searchParams.get("page") ?? "1";
+  const per_page = searchParams.get("per_page") ?? PER_PAGE;
 
   return (
     <>
-      {totalPages > 2 && (
-        <div className="flex gap-4">
-          {pages.map((page) => (
-            <button
-              key={page}
-              className="flex p-1 border px-2"
-              onClick={() => createPageURL(page + 1)}
-            >
-              {page + 1}
-            </button>
-          ))}
+      {length > Number(PER_PAGE) && (
+        <div className="mt-2 flex gap-2 items-center">
+          <button
+            className="disabled:bg-gray-400 bg-black text-white rounded-full p-1"
+            disabled={!hasPrevPage}
+            onClick={() => {
+              router.push(
+                `${path}?page=${Number(page) - 1}&per_page=${per_page}`
+              );
+            }}
+          >
+            <ChevronLeft />
+          </button>
+
+          <div className="w-14 text-center">
+            {page} / {Math.ceil(length / Number(per_page))}
+          </div>
+
+          <button
+            className="disabled:bg-gray-400 bg-black text-white rounded-full p-1"
+            disabled={!hasNextPage}
+            onClick={() => {
+              router.push(
+                `${path}?page=${Number(page) + 1}&per_page=${per_page}`
+              );
+            }}
+          >
+            <ChevronRight />
+          </button>
         </div>
       )}
     </>

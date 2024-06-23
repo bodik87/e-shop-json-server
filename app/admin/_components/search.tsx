@@ -7,20 +7,20 @@ import SubmitButton from "@/app/components/submit-button";
 import { Product } from "@/app/lib/types/product.interfase";
 import Image from "next/image";
 
-type Props = { products: Product[] };
+type Props = { products: Product[]; entries: Product[] };
 
-export default function Search({ products }: Props) {
-  const [text, setText] = useState("");
+export default function Search({ products, entries }: Props) {
+  const [query, setQuery] = useState("");
 
   const filteredProducts =
-    text === ""
+    query === ""
       ? products
       : products.filter(
           (product: Product) =>
             product.title
               .toLowerCase()
               .replace(/\s+/g, "")
-              .includes(text.toLowerCase().replace(/\s+/g, ""))
+              .includes(query.toLowerCase().replace(/\s+/g, ""))
           // ||
           // element?.info
           //   ?.toLowerCase()
@@ -31,18 +31,35 @@ export default function Search({ products }: Props) {
   return (
     <section className="mt-2">
       <div className="flex flex-col md:flex-row items-center gap-4 my-4">
-        <strong>Products</strong>
         <input
           type="search"
           className="max-w-md w-full border border-black px-3 py-2 rounded-full"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Search"
         />
       </div>
 
+      {query && (
+        <>
+          <strong>Searching result</strong>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="w-full border border-black rounded px-3 py-2 "
+              >
+                <p>{product.title}</p>
+                <EditRow product={product} />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      <strong>All products</strong>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {filteredProducts.map((product) => (
+        {entries.map((product) => (
           <div
             key={product.id}
             className="w-full border border-black rounded px-3 py-2 mb-2"
@@ -72,26 +89,32 @@ export default function Search({ products }: Props) {
               />
             )}
 
-            <div className="flex gap-2">
-              <Link
-                href={{ pathname: "/admin/edit", query: { id: product.id } }}
-                className="button"
-              >
-                Edit
-              </Link>
-
-              <form
-                action={async () => {
-                  await deleteProduct(product.id);
-                }}
-              >
-                <input name="id" type="hidden" value={product.id} readOnly />
-                <SubmitButton label="Delete" />
-              </form>
-            </div>
+            <EditRow product={product} />
           </div>
         ))}
       </div>
     </section>
+  );
+}
+
+function EditRow({ product }: { product: Product }) {
+  return (
+    <div className="flex gap-2">
+      <Link
+        href={{ pathname: "/admin/edit", query: { id: product.id } }}
+        className="button"
+      >
+        Edit
+      </Link>
+
+      <form
+        action={async () => {
+          await deleteProduct(product.id);
+        }}
+      >
+        <input name="id" type="hidden" value={product.id} readOnly />
+        <SubmitButton label="Delete" />
+      </form>
+    </div>
   );
 }
